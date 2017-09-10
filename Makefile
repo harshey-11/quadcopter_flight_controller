@@ -217,6 +217,8 @@ ULIBS =
 # End of user defines
 ##############################################################################
 
+.DEFAULT_GOAL := all
+
 cppcheck:
 	cppcheck --verbose --force --error-exitcode=1 --enable=style . -i third_party/ 2> err.xml
 
