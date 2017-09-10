@@ -217,5 +217,8 @@ ULIBS =
 # End of user defines
 ##############################################################################
 
+cppcheck:
+	cppcheck --verbose --force --error-exitcode=1 --enable=style . -i third_party/ 2> err.xml
+
 RULESPATH = $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC
 include $(RULESPATH)/rules.mk
