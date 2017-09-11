@@ -4,6 +4,7 @@
  * \brief  LIS3DSH accelerometer driver source
  **/
 
+#include "hal.h"
 #include "lis3dsh.h"
 #include "lis3dsh_reg.h"
 
@@ -15,13 +16,14 @@
 #define LIS3DSH_SPI_WRITE   0x00U
 
 #define LIS3DSH_FS_IS_VALID(fs)   ((fs > LIS3DSH_FS_UNDERFLOW) && (fs < LIS3DSH_FS_MAX))
-#define LIS3DSH_ODR_IS_VALID(odr) ((fs > LIS3DSH_ODR_UNDERFLOW) && (fs < LIS3DSH_ODR_MAX))
+#define LIS3DSH_ODR_IS_VALID(odr) ((odr > LIS3DSH_ODR_UNDERFLOW) && (odr < LIS3DSH_ODR_MAX))
 
 #define LIS3DSH_2G_SENS     0.00006f
 #define LIS3DSH_4G_SENS     0.00012f
 #define LIS3DSH_6G_SENS     0.00018f
 #define LIS3DSH_8G_SENS     0.00024f
 #define LIS3DSH_16G_SENS    0.00073f
+#define LIS3DSH_SENS_MAX    5U
 
 /*===========================================================================*/
 /* Driver local variables and types.                                         */
@@ -29,7 +31,7 @@
 
 typedef uint8_t register_addr_t;
 
-static const float sensitivities[LIS3DSH_AXES] =
+static const float sensitivities[LIS3DSH_SENS_MAX] =
 {
   LIS3DSH_2G_SENS,
   LIS3DSH_4G_SENS,
@@ -197,7 +199,7 @@ static void
 _set_acc_fullscale(LIS3DSHDriver* handle)
 {
   osalDbgCheck(handle != NULL);
-  osalDbgAssert(LIS3DSH_FS_IS_VALID(handle->cfg->fullscale_val));
+  osalDbgAssert(LIS3DSH_FS_IS_VALID(handle->cfg->fullscale_val), "LIS3DSH invalid fullscale selection");
   uint8_t tx_frame = LIS3DSH_FS_SHIFT(handle->cfg->fullscale_val);
   _set_bits_in_reg(handle, CTRL_REG5_ADDR, tx_frame);
 }
@@ -207,10 +209,11 @@ _set_acc_fullscale(LIS3DSHDriver* handle)
  * \param[in] handle - LIS3DSH handle
  * \notapi
  **/
+static void
 _set_acc_odr(LIS3DSHDriver* handle)
 {
   osalDbgCheck(handle != NULL);
-  osalDbgAssert(LIS3DSH_ODR_IS_VALID(handle->cfg->odr_value));
+  osalDbgAssert(LIS3DSH_ODR_IS_VALID(handle->cfg->odr_value), "LIS3DSH invalid ODR selection");
   uint8_t tx_frame = LIS3DSH_ODR_SHIFT(handle->cfg->odr_value);
   _set_bits_in_reg(handle, CTRL_REG4_ADDR, tx_frame);
 }
@@ -348,10 +351,10 @@ void lis3dshGetData(LIS3DSHDriver* lis3dsh, float axes[LIS3DSH_AXES])
   /* read raw data */
   _read_raw(lis3dsh, raw_data);
   /* read offset for each axis */
-  _read_register(lis3dsh, OFF_X_ADDR, offset, LIS3DSH_AXES);
+  _read_register(lis3dsh, OFF_X_ADDR, (uint8_t*)offset, LIS3DSH_AXES);
 
   for(i = 0U ; i < LIS3DSH_AXES ; i++) {
-    raw_data[i] -= (raw_data[i] - (offset[i] * 32));
+    //raw_data[i] -= (raw_data[i] - (offset[i] * 32));
     axes[i] = raw_data[i] * lis3dsh->sensitivity[i];
   }
 }

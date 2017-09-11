@@ -11,6 +11,13 @@
 
 typedef enum
 {
+  LIS3DSH_STOP = 0,
+  LIS3DSH_START,
+  LIS3DSH_SLEEPING
+} lis3dsh_state_t;
+
+typedef enum
+{
   LIS3DSH_FS_UNDERFLOW = -1,
   LIS3DSH_FS_2G,  /*<! +/- 2G */
   LIS3DSH_FS_4G,  /*<! +/- 4G */
