@@ -169,11 +169,11 @@ _read_raw(LIS3DSHDriver* handle, int32_t axes[LIS3DSH_AXES])
   uint8_t raw[LIS3DSH_AXES * 2U] = {0};
   size_t i;
 
-  _read_register(handle, OUT_X_L, (uint8_t*)raw, LIS3DSH_AXES * 2U);
+  _read_register(handle, OUT_X_L, raw, LIS3DSH_AXES * 2U);
 
   for(i = 0U ; i < LIS3DSH_AXES ; i++) {
-    axes[i] |= (int32_t)raw[i * 2]; /* least significant bits */
-    axes[i] |= (int32_t)(raw[(i * 2) + 1] << 8); /* most significant bits */
+    int16_t temp = raw[i * 2] + (raw[(i * 2) + 1] << 8);
+    axes[i] = (int32_t)temp;
   }
 }
 
@@ -354,7 +354,7 @@ void lis3dshGetData(LIS3DSHDriver* lis3dsh, float axes[LIS3DSH_AXES])
   _read_register(lis3dsh, OFF_X_ADDR, (uint8_t*)offset, LIS3DSH_AXES);
 
   for(i = 0U ; i < LIS3DSH_AXES ; i++) {
-    //raw_data[i] -= (raw_data[i] - (offset[i] * 32));
+    //raw_data[i] -= (raw_data[i] - ((int32_t)offset[i] * 32));
     axes[i] = raw_data[i] * lis3dsh->sensitivity[i];
   }
 }

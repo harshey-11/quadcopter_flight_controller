@@ -104,8 +104,8 @@ int main(void) {
       /* read from gyro */
       float acc_readings[LIS3DSH_AXES] = {0.0f};
       lis3dshGetData(acc_ptr, acc_readings);
-      chprintf((BaseSequentialStream*) &SD4, "Ax = %0.3f G ; Ay = %0.3f G ; Az = %0.3f G\r\n",
-          acc_readings[0], acc_readings[1], acc_readings[0]);
+      chprintf((BaseSequentialStream*)&SD4, "Ax = %0.3f G ; Ay = %0.3f G ; Az = %0.3f G\r\n",
+          acc_readings[0], acc_readings[1], acc_readings[2]);
     }
   }
 
