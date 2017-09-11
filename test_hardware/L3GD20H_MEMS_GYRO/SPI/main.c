@@ -108,7 +108,7 @@ int main(void) {
       float gyro_readings[L3GD20H_AXES] = {0};
       l3gd20hReadCooked(gyro_ptr, gyro_readings);
       chprintf((BaseSequentialStream*) &SD4, "Gx = %0.3f dps ; Gy = %0.3f dps ; Gz = %0.3f dps\r\n",
-          gyro_readings[0], gyro_readings[1], gyro_readings[0]);
+          gyro_readings[0], gyro_readings[1], gyro_readings[2]);
     }
   }
 
