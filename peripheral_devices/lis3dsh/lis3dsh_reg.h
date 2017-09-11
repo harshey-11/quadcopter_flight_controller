@@ -76,6 +76,8 @@
 #define YEN            0x02U /*<! Y-axis enable (default : 1) */
 #define XEN            0x01U /*<! X-axis enable (default : 1) */
 
+#define LIS3DSH_ODR_SHIFT(odr) ((odr << 4) & ODR)
+
 /**
  * \brief Control register # 3
  *
@@ -125,6 +127,8 @@
 #define ST1            0x04U /*<! ST[1] */
 #define ST0            0x02U /*<! ST[0] */
 #define SIM            0x01U /*<! SPI serial internal interface mode selection (default : 0) */
+
+#define LIS3DSH_FS_SHIFT(fs) ((fs << 3) & FSCALE)
 
 /**
  * \brief Control register # 6
