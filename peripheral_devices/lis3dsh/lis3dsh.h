@@ -9,6 +9,9 @@
 
 #define LIS3DSH_AXES        3U
 
+/**
+ * \brief LIS3DSH states
+ **/
 typedef enum
 {
   LIS3DSH_STOP = 0,
@@ -16,6 +19,9 @@ typedef enum
   LIS3DSH_SLEEPING
 } lis3dsh_state_t;
 
+/**
+ * \brief LIS3DSH fullscale selection
+ **/
 typedef enum
 {
   LIS3DSH_FS_UNDERFLOW = -1,
@@ -27,6 +33,9 @@ typedef enum
   LIS3DSH_FS_MAX
 } lis3dsh_fullscale_t;
 
+/**
+ * \brief LIS3DSH ODR selection
+ **/
 typedef enum
 {
   LIS3DSH_ODR_UNDERFLOW = -1,
@@ -63,6 +72,10 @@ typedef struct
   const LIS3DSHConfig *cfg;        /*<! Driver configurations */
   float sensitivity[LIS3DSH_AXES]; /*<! Output sensitivity */
 } LIS3DSHDriver;
+
+/*===========================================================================*/
+/* Driver API                                                                */
+/*===========================================================================*/
 
 #ifdef __cplusplus
 extern "C" {
